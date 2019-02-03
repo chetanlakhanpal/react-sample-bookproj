@@ -1,6 +1,6 @@
 # MyReads Project
 
-This is small react project which List Books on Dashboard by communication with a Backend Server. User can select which book they would like to read, can also mark it as Currently Reading or already Read. It uses React router to show different page and uses React Context to share data with component (BookShelf) nested deep inside.
+This is small react project which List Books on Dashboard by communicating with a Backend Server. User can select which book they would like to read, can also mark it as Currently Reading or already Read. It uses React router to show different page and uses React Context to share data with component (BookShelf) nested deep inside.
 
 ## To get started developing right away:
 
