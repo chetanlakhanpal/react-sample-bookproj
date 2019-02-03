@@ -9,7 +9,7 @@ class BookShelf extends Component {
     <div className="bookshelf-books">
       <ol className="books-grid">
         {this.props.info && (this.props.info.map((data, index) => (
-          <Book key={data.industryIdentifiers[0].identifier} {...this.props.info[index]}/>
+          <Book key={data.id}  data={data}/>
         )))}
       </ol>
     </div>
