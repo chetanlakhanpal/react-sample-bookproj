@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import BookShelf from "./Bookshelf";
 import * as API from '../../src/BooksAPI'
 import BookShelfContext from "./BookShelfContext";
+import { Link } from 'react-router-dom'
 
 class ListBooks extends Component {
 
@@ -31,14 +32,17 @@ class ListBooks extends Component {
   }
 
   onBookShelfChange = (newShelf, book) => {
-    this.setState((state) => {
-      const books = state.books
-      const oldShelf = book.shelf
-      books[oldShelf] = books[oldShelf].filter(value => (value.id !== book.id))
-      book.shelf = newShelf
-      books[newShelf].push(book)
-       return {books: books}
+    API.update(book, newShelf).then((data) => {
+      this.setState((state) => {
+        const books = state.books
+        const oldShelf = book.shelf
+        books[oldShelf] = books[oldShelf].filter(value => (value.id !== book.id))
+        book.shelf = newShelf
+        books[newShelf].push(book)
+         return {books: books}
+      })
     })
+
   }
 
   render = () => {
@@ -59,8 +63,13 @@ class ListBooks extends Component {
           </div>
         </div>
         <div className="open-search">
-          <button onClick={() => this.setState({ showSearchPage: true })}>Add a book</button>
-        </div>
+          <Link 
+          to='/search'
+          className="open-search"
+          >
+          Add a book
+          </Link>
+        </div> 
       </div>)
   }
 }

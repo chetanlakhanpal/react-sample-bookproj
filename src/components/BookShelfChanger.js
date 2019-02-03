@@ -7,11 +7,11 @@ class BookShelfChanger extends Component {
     <div className="book-shelf-changer">
       <BookShelfContext.Consumer>
         {({types, onBookShelfChange}) => (
-        <select onChange={(event) => onBookShelfChange(event.target.value, this.props.book)}>
+        <select value={this.props.book.shelf} onChange={(event) => onBookShelfChange(event.target.value, this.props.book)}>
           <option value="move" disabled>Move to...</option>
-          <option value="currentlyReading" selected={this.props.book.shelf === 'currentlyReading'}>Currently Reading</option>
-          <option value="wantToRead" selected={this.props.book.shelf === 'wantToRead'}>Want to Read</option>
-          <option value="read" selected={this.props.book.shelf === 'read'}>Read</option>
+          <option value="currentlyReading">Currently Reading</option>
+          <option value="wantToRead">Want to Read</option>
+          <option value="read">Read</option>
         </select>
         )}
       </BookShelfContext.Consumer>
