@@ -3,7 +3,25 @@ import BookShelfChanger from './BookShelfChanger'
 
 class Book extends Component {
 
+  constructor(props){
+    super(props)
+    this.state = {
+      hasError: false
+    }
+  }
+
+  static getDerivedStateFromError(error) {
+    return {hasError: true}
+  }
+
+  componentDidCatch(error, info) {
+    this.setState({hasError: true})
+  }
+
   render = () => {
+    if(this.state.hasError){
+      return (<p>There seems to be some error in displaying information.</p>)
+    }
     return (
       <li>
           <div className="book">

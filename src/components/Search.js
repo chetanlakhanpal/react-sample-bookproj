@@ -1,9 +1,49 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import { search } from '../BooksAPI'
+import Book from "./Book";
 
 class Search extends Component {
   constructor(props){
-    super()
+    super(props)
+    this.state = {
+      query: '',
+      books: [],
+      searching: false
+    }
+  }
+
+  showBooks = (value) => {
+    if(value){
+      this.setState({searching: true, query: value})
+      search(value).then((data) => {
+        if(Array.isArray(data)){
+         this.checkIfAlreadyinShelf(data)
+        }else{
+          this.setState({books: [], searching: false})
+        }
+      })
+    }else{
+      this.setState({books: [], searching: false, query: value})
+    }
+  }
+
+  checkIfAlreadyinShelf = (data) => {
+    const books = data.map(data => {
+      if(data.imageLinks === undefined){
+        data.imageLinks = {
+          thumbnail: ''
+        }
+      }
+      console.log(this.props.bookIds[data.id])
+      if(this.props.bookIds[data.id] !== undefined){
+        data.shelf = this.props.bookIds[data.id]
+      }else{
+        data.shelf = 'none'
+      }
+      return data
+    })
+    this.setState({books: books, searching: false})
   }
 
   render = () => {
@@ -12,20 +52,17 @@ class Search extends Component {
         <div className="search-books-bar">
         <Link to="/" className="close-search">Close</Link>
           <div className="search-books-input-wrapper">
-            {/*
-              NOTES: The search from BooksAPI is limited to a particular set of search terms.
-              You can find these search terms here:
-              https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
-
-              However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-              you don't find a specific author or title. Every search is limited by search terms.
-            */}
-            <input type="text" placeholder="Search by title or author"/>
-
+            <input autoFocus={true} type="text" placeholder="Search by title or author" value={this.state.query} onChange={(event) => this.showBooks(event.target.value)}/>
           </div>
         </div>
         <div className="search-books-results">
-          <ol className="books-grid"></ol>
+          <ol className="books-grid">
+          {!this.state.books.length && !this.state.searching && (<p>No books to display.</p>)}
+          {!this.state.books.length && this.state.searching && (<p>Searching...</p>)}
+          {this.state.books && (this.state.books.map(data => (
+            <Book key={data.id} data={data} />
+          ) ) )}
+          </ol>
         </div>
       </div>
     )
